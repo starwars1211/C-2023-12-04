@@ -7,17 +7,21 @@
 #include "Floar.h"
 #include "Goal.h"
 #include "GameMode.h"
+#include "GameState.h"
 
 SimpleEngin* SimpleEngin::Instance = nullptr;
 int SimpleEngin::KeyCode = 0;
 
 SimpleEngin::SimpleEngin()
 {
+	GameMode = nullptr;
+	GameState = nullptr;
 	Init();
 }
 
 SimpleEngin::~SimpleEngin()
 {
+
 	Term();
 }
 
@@ -46,6 +50,8 @@ void SimpleEngin::Stop()
 
 void SimpleEngin::Term()
 {
+	GameMode = nullptr;
+	GameState = nullptr;
 	IsRunning = false;
 	delete  World;
 }
@@ -112,7 +118,13 @@ void SimpleEngin::LoadLevel(std::string Filename)
 	}
 	
 	GetWorld()->SortRenderOrder();
-	GetWorld()->SpawnActor(new AGameMode);
+	
+	GetWorld()->SpawnActor(new AGameMode());
+	GameMode = new AGameMode();
+	
+	GetWorld()->SpawnActor(new AGameState());
+	GameState = new AGameState();
+	GetWorld()->SpawnActor(GameState);
 }
 
 void SimpleEngin::Input()

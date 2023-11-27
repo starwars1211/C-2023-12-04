@@ -9,6 +9,11 @@ UWorld::UWorld()
 
 UWorld::~UWorld()
 {
+	for (auto Actor : Actors)
+	{
+		delete Actor;
+	}
+	Actors.clear();
 }
 
 void UWorld::SpawnActor(AActor* NewActor)

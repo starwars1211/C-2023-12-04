@@ -4,6 +4,8 @@
 
 class UWorld;
 class AActor;
+class AGameState;
+class AGameMode;
 
 class SimpleEngin
 {
@@ -37,6 +39,17 @@ public:
 
 	 static int KeyCode;
 
+	 static AGameState* GetGameState()
+	 {
+		 return GetInstance()->GameState;
+	 }
+
+	 static AGameMode* GetGameMode()
+	 {
+		 return GetInstance()->GameMode;
+
+	 }
+
 protected:
 	 UWorld* World;
 	 bool IsRunning;
@@ -46,6 +59,10 @@ protected:
 	 void Render();
 
 	 static SimpleEngin* Instance;
+
+	 class AGameMode* GameMode;
+	 class AGameState* GameState;
+
 
 };
 #define GEngine SimpleEngin::GetInstance()
