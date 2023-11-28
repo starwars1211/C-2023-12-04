@@ -31,7 +31,12 @@ void APlayer::Tick()
 	//AActor::Tick(KeyCode);
 	__super::Tick();
 	int KeyCode = SimpleEngin::KeyCode;
+	/*
+	if (SimpleEngin:GetGameState()->IsGameOver);
+	{
 
+	}
+	*/
 	if (KeyCode == 'A' || KeyCode == 'a')
 	{	
 		

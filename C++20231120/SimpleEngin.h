@@ -22,7 +22,7 @@ public:
 
 	 void Stop();
 
-	 void Term();
+	 void Term();//// √ ±‚»≠
 
 	 void LoadLevel(std::string Filename);
 
@@ -63,7 +63,7 @@ protected:
 	 class AGameMode* GameMode;
 	 class AGameState* GameState;
 
-
+	 void LoadActor(int NewX, int NewY, char Actor);
 };
 #define GEngine SimpleEngin::GetInstance()
 
