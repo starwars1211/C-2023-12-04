@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main()
+int SDL_main(int argc, char* argv[])
 {
 	SimpleEngin* MyEngine = SimpleEngin::GetInstance();
 
@@ -25,10 +25,6 @@ int main()
         file.close();
     }
     */
-
-
-
-
 
 	return 0;
 }

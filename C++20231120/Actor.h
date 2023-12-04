@@ -1,4 +1,7 @@
 #pragma once
+#include "SDL.h"
+#include <iostream>
+
 class AActor
 {
 public:
@@ -27,8 +30,22 @@ public:
 		return this->SortOrder > RHS.SortOrder;
 	}
 
+	SDL_Color Color;
+
 	int SortOrder;
 	bool bCollide;// 충돌할건지 말건지 알아보기 위한 값
+
+
+	Uint16 Size;
+
+	SDL_Surface* MySurface;
+	SDL_Texture* MyTexture;
+
+	bool bIsSprite;
+	int SpriteSizeX;
+	int SpriteSizeY;
+
+	virtual void LoadBMP(std::string Filename, SDL_Color ColorKey = SDL_Color{255,255,255,0});
 
 protected:
 		int X;

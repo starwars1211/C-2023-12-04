@@ -18,14 +18,20 @@ AMonster::AMonster()
 	SortOrder = 300;
 	bCollide = false;
 	srand((unsigned int)time(nullptr));
+	ProcessTime = 500;
+	ElaspedTime = 0;
 }
 
-AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder)
+AMonster::AMonster(int NewX, int NewY, char NewShape, int NewSortOrder, SDL_Color NewColor)
 {
 	Shape = NewShape;
 	SetX(NewX);
 	SetY(NewY);
 	SortOrder = NewSortOrder;
+	Color = NewColor;
+	ProcessTime = 500;
+	ElaspedTime = 0;
+	LoadBMP("Data/Slime.bmp");
 }
 
 AMonster::~AMonster()
@@ -35,8 +41,20 @@ AMonster::~AMonster()
 
 
 void AMonster::Tick()
-{ 
+{
 	__super::Tick();
+
+	ElaspedTime += GEngine->GetWorldDeltaSeconds();
+	if (ElaspedTime <= ProcessTime)
+	{
+		return;
+	}
+	else
+	{
+		ElaspedTime = 0;
+	}
+
+
 	for (const auto& Actor : GEngine->GetWorld()->GetAllActors())
 	{
 		APlayer* MyPlayer = dynamic_cast<APlayer*>(Actor);
@@ -94,6 +112,7 @@ bool AMonster::IsCollide(int NewX, int NewY)
 			Actor->GetX() == NewX &&
 			Actor->GetY() == NewY)
 		{
+			//SimpleEngiune::GetgameState()->IsGameOver =
 			return true;
 		}
 	}

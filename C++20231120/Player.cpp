@@ -7,20 +7,23 @@
 APlayer::APlayer()
 {
 	Shape = 'P';
-	X = 1;
-	Y = 1;
+	X = 10;
+	Y = 10;
 	SortOrder = 500;
 }
 
-APlayer::APlayer(int NewX,int NewY, char NewShape, int NewSortOrder)
+APlayer::APlayer(int NewX,int NewY, char NewShape, int NewSortOrder, SDL_Color NewColor)
 {
 	Shape = NewShape;
 	SetX(NewX);
 	SetY(NewY);
 	SortOrder = NewSortOrder;
+	Color = NewColor;
+	LoadBMP("Data/Player.bmp", SDL_Color{255,0,255,0});
+	bIsSprite = true;
+	SpriteSizeX = 5;
+	SpriteSizeY = 5;
 }
-
-
 
 APlayer::~APlayer()
 {
@@ -30,14 +33,20 @@ void APlayer::Tick()
 {
 	//AActor::Tick(KeyCode);
 	__super::Tick();
-	int KeyCode = SimpleEngin::KeyCode;
-	/*
-	if (SimpleEngin:GetGameState()->IsGameOver);
-	{
+	//int KeyCode = SimpleEngine::KeyCode;
+	int KeyCode = GEngine -> MyEvent.key.keysym.sym;
 
+	if (GEngine->MyEvent.type == SDL_KEYDOWN)
+	{
+		return;
 	}
-	*/
-	if (KeyCode == 'A' || KeyCode == 'a')
+	
+	if (SimpleEngin::GetGameState()->IsGameOver)
+	{
+		return;
+	}
+	
+	if (KeyCode == SDLK_a)
 	{	
 		
 			//GEngine->GetWorld()->GetallActors();
@@ -46,28 +55,28 @@ void APlayer::Tick()
 			X--;
 		}
 	}
-	if (KeyCode == 'D' || KeyCode == 'd')
+	if (KeyCode == SDLK_d)
 	{
 		if (!IsCollide(X + 1, Y))
 		{
 			X++;
 		}
 	}
-	if (KeyCode == 'W' || KeyCode == 'w')
+	if (KeyCode == SDLK_w)
 	{
 		if (!IsCollide(X, Y - 1))
 		{
 			Y--;
 		}
 	}
-	if (KeyCode == 'S' || KeyCode == 's')
+	if (KeyCode == SDLK_s)
 	{
 		if (!IsCollide(X, Y + 1))
 		{
 			Y++;
 		}
 	}
-	if (KeyCode == 27)
+	if (KeyCode == SDLK_ESCAPE)
 	{
 		GEngine->Stop();
 	}

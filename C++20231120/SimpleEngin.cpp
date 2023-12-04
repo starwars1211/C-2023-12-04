@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 
+
 SimpleEngin* SimpleEngin::Instance = nullptr;
 int SimpleEngin::KeyCode = 0;
 
@@ -18,13 +19,20 @@ SimpleEngin::SimpleEngin()
 {
 	GameMode = nullptr;
 	GameState = nullptr;
+	SDL_Init(SDL_INIT_EVERYTHING);
+	MyWindow = SDL_CreateWindow("HelloWorld", 100, 100, 1000, 800, SDL_WINDOW_OPENGL); // 창 만드는 것
+	MyRenderer = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED); // 펜 만드는 것 (윈도우창, 첫번째, 어떤방식)
+
 	Init();
 }
 
 SimpleEngin::~SimpleEngin()
 {
-
 	Term();
+
+	SDL_DestroyRenderer(MyRenderer);
+	SDL_DestroyWindow(MyWindow);
+	SDL_Quit();
 }
 
 void SimpleEngin::Init()
@@ -37,11 +45,33 @@ void SimpleEngin::Run()
 {
 	while (IsRunning)
 	{
-		Input(); ///Input
+		DeltaSeconds = SDL_GetTicks64() - LastTime;// 초기 시간에서 마지막 시간을 빼줌
+		LastTime = SDL_GetTicks64();
+
+		Input();
+
+		switch (MyEvent.type) //// tick
+		{
+		case SDL_QUIT:
+			IsRunning = false;
+			break;
+		case SDL_KEYDOWN:
+			if (MyEvent.key.keysym.sym == SDLK_ESCAPE) // 키값을 쓰기 위해서 
+			{
+				IsRunning = false;
+			}
+			break;
+		}
+		//Input(); ///Input
 		Tick(); //Tick
 		//Clear Screen
-		system("Cls");
+		//system("cls");
+		SDL_SetRenderDrawColor(GEngine->MyRenderer, 0, 0, 0, 0);
+		SDL_RenderClear(GEngine->MyRenderer);
+		
 		Render(); //Render
+
+		SDL_RenderPresent(GEngine->MyRenderer);//그려라
 	}
 }
 
@@ -60,6 +90,8 @@ void SimpleEngin::Term()
 
 void SimpleEngin::LoadLevel(std::string Filename)
 {
+	Term();
+	Init();
 	//Save
 	//Memory -> Disk L Ssrialize , Text(JSON, csv), binary(umap)
 	//Disk -> Memory : Deserialize
@@ -80,7 +112,7 @@ void SimpleEngin::LoadLevel(std::string Filename)
 
 	int Y = 0;
 	std::string line;
-	std::ifstream file(Filename);
+    std::ifstream file(Filename);
 	if (file.is_open())
 	{
 		while (getline(file, line))///getline 한줄 읽어라
@@ -109,7 +141,8 @@ void SimpleEngin::LoadLevel(std::string Filename)
 
 void SimpleEngin::Input()
 {
-	KeyCode = _getch();
+	//KeyCode = MyEvent.key.keysym.sym;
+	SDL_PollEvent(&MyEvent);
 }
 
 void SimpleEngin::Tick()
