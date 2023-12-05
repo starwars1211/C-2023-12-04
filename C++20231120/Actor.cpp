@@ -75,10 +75,7 @@ void AActor::Render()
 		*/
 	if (bIsSprite)
 	{
-		SDL_RenderCopy(GEngine->MyRenderer,
-			MyTexture,
-			new SDL_Rect{ 0, 0, MySurface->w / SpriteSizeX, MySurface->h / SpriteSizeY },
-			new SDL_Rect{ X * Size, Y * Size, Size, Size });
+		
 	}
 	else
 	{

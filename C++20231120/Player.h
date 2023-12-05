@@ -10,6 +10,14 @@ public:
 	virtual	~APlayer();
 
 	virtual void Tick() override;
+	virtual void Render();
 	bool IsCollide(int NewX, int NewY);
+
+	Uint64 ProcessTime;
+
+	Uint64 ElaspedTime;
+
+	Uint8 SpriteIndex;
+	Uint8 SpriteDirection;
 
 };
